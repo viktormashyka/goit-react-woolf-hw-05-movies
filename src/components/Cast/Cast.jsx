@@ -1,7 +1,7 @@
-import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { fetchMovieCreditsById } from 'api/api';
-
+import { Loader } from 'components/Loader/Loader';
 import { Image, List, Item, ImageContainer, Text } from './Cast.styled';
 
 const Cast = () => {
@@ -29,7 +29,9 @@ const Cast = () => {
 
   return (
     <>
-      {cast.length > 0 ? (
+      {error && <p>Whoops, something went wrong: {error.message}</p>}
+      {isLoading && <Loader />}
+      {!error && !isLoading && cast.length > 0 ? (
         <List>
           {cast.map(el => (
             <Item key={el.id}>

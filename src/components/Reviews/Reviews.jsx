@@ -1,8 +1,8 @@
-import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { fetchMovieReviewsById } from 'api/api';
-
 import { List, Item, Text, Subheading } from './Reviews.styled';
+import { Loader } from 'components/Loader/Loader';
 
 const Reviews = () => {
   const [reviews, setReviews] = useState([]);
@@ -29,7 +29,9 @@ const Reviews = () => {
 
   return (
     <>
-      {reviews?.length > 0 ? (
+      {error && <p>Whoops, something went wrong: {error.message}</p>}
+      {isLoading && <Loader />}
+      {!error && !isLoading && reviews?.length > 0 ? (
         <List>
           {reviews.map(el => (
             <Item key={el.id}>

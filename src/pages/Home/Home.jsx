@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { MovieList } from 'components/MovieList/MovieList';
-import { fetchTrendingMoviesToday } from 'api/api';
 import { Loader } from 'components/Loader/Loader';
-import { Container, Heading } from 'components/Home/Home.styled';
+import { Container, Heading } from 'pages/Home/Home.styled';
+import { fetchTrendingMoviesToday } from 'api/api';
 
 const Home = () => {
   const [movies, setMovies] = useState([]);
@@ -29,7 +29,7 @@ const Home = () => {
     <Container>
       {error && <p>Whoops, something went wrong: {error.message}</p>}
       {isLoading && <Loader />}
-      {movies.length > 0 && (
+      {!error && !isLoading && movies.length > 0 && (
         <>
           <Heading>Trending today</Heading>
           <MovieList movies={movies} />

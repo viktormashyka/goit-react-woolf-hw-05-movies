@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
 import { fetchMoviesByTitle } from 'api/api';
 import { SearchBar } from 'components/SearchBar/SearchBar';
 import { Container } from './Movies.styled';
 import { Loader } from 'components/Loader/Loader';
 import { MovieList } from 'components/MovieList/MovieList';
-import { toast } from 'react-toastify';
 
 const Movies = () => {
   const [movies, setMovies] = useState([]);
@@ -46,7 +46,9 @@ const Movies = () => {
       <SearchBar onSubmit={onSubmit} />
       {error && <p>Whoops, something went wrong: {error.message}</p>}
       {isLoading && <Loader />}
-      {movies?.length > 0 && <MovieList movies={movies} />}
+      {!error && !isLoading && movies?.length > 0 && (
+        <MovieList movies={movies} />
+      )}
     </Container>
   );
 };

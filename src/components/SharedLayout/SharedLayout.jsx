@@ -1,17 +1,29 @@
-import { Container, Header } from './SharedLayout.styled';
-import { Outlet, Link } from 'react-router-dom';
+import { Suspense } from 'react';
+import { Outlet } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { Container, Header, Link } from './SharedLayout.styled';
+import { ReactComponent as FilmSvg } from '../../images/film.svg';
+import { Loader } from 'components/Loader/Loader';
 
-export const SharedLayout = () => {
+const SharedLayout = () => {
   return (
     <Container>
       <Header>
+        <FilmSvg />
         <nav>
-          <Link to="/">Home</Link>
-          <Link to="/about">About</Link>
-          <Link to="/products">Products</Link>
+          <Link to="/" end>
+            Home
+          </Link>
+          <Link to="/movies">Movies</Link>
         </nav>
       </Header>
-      <Outlet />
+      <Suspense fallback={<Loader />}>
+        <Outlet />
+      </Suspense>
+      <ToastContainer />
     </Container>
   );
 };
+
+export default SharedLayout;
