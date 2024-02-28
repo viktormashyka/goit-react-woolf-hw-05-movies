@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import {
   SearchForm,
   SearchFormButton,
@@ -7,8 +8,14 @@ import {
   SearchBarHeader,
 } from './SearchBar.styled';
 
-export const SearchBar = ({ onSubmit }) => {
+export const SearchBar = () => {
   const [search, setSearch] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    const searchQuery = searchParams.get('query');
+    searchQuery && setSearch(searchQuery);
+  }, [searchParams]);
 
   const handleChange = evt => {
     setSearch(evt.currentTarget.value);
@@ -16,8 +23,7 @@ export const SearchBar = ({ onSubmit }) => {
 
   const handleSubmit = evt => {
     evt.preventDefault();
-    onSubmit(search);
-    setSearch('');
+    setSearchParams({ query: search });
   };
 
   return (
@@ -26,7 +32,6 @@ export const SearchBar = ({ onSubmit }) => {
         <SearchFormButton type="submit">
           <SearchFormButtonLabel>Search</SearchFormButtonLabel>
         </SearchFormButton>
-
         <SearchFormInput
           type="text"
           value={search}

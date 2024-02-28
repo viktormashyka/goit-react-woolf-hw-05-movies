@@ -1,8 +1,14 @@
 import { useEffect, useState } from 'react';
-import { useParams, Link, Outlet, useLocation } from 'react-router-dom';
+import {
+  useParams,
+  Link,
+  Outlet,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
 import { Loader } from 'components/Loader/Loader';
 import { fetchMovieById } from 'api/api';
-import { BackLink } from 'components/BackLink/BackLink';
+import { BackButton } from 'components/BackButton/BackButton';
 
 import {
   Container,
@@ -25,13 +31,14 @@ const MovieDetails = () => {
   const [error, setError] = useState(null);
   const { movieId } = useParams();
   const location = useLocation();
-  const backLinkHref = location?.state?.from ?? '/movies';
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchData() {
       if (!movieId) return;
       try {
         setIsLoading(true);
+        setError('');
         const data = await fetchMovieById(movieId);
 
         setMovie(data);
@@ -47,28 +54,28 @@ const MovieDetails = () => {
   const yearOfRelease = movie?.release_date?.slice(0, 4);
   const userScore = (Number(movie?.vote_average) * 10)?.toFixed(0);
 
+  const handleBack = () => {
+    navigate(location.state ?? '/movies');
+  };
+
   return (
     <Container>
       {error && <p>Whoops, something went wrong: {error.message}</p>}
       {isLoading && <Loader />}
       {!error && !isLoading && (
         <>
-          <BackLink to={backLinkHref}>Go back</BackLink>
+          <BackButton handleBack={handleBack}>Go back</BackButton>
           <MovieContainer>
             <ImageContainer>
-              {movie.poster_path ? (
-                <Image
-                  src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                  alt="movie poster"
-                />
-              ) : (
-                <Image
-                  src="https://via.placeholder.com/200x300"
-                  alt="movie placeholder"
-                />
-              )}
+              <Image
+                src={
+                  movie.poster_path
+                    ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+                    : 'https://via.placeholder.com/200x300'
+                }
+                alt="movie poster"
+              />
             </ImageContainer>
-
             <ContentContainer>
               <Heading>
                 {movie.title} ({yearOfRelease})

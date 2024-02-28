@@ -13,6 +13,7 @@ const Home = () => {
     async function fetchData() {
       try {
         setIsLoading(true);
+        setError('');
         const { results } = await fetchTrendingMoviesToday();
 
         setMovies(results);

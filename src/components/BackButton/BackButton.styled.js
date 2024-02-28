@@ -1,15 +1,14 @@
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-export const StyledLink = styled(Link)`
+export const Button = styled.button`
   display: inline-flex;
+  width: 100px;
   align-items: center;
   gap: 4px;
-  padding: 8px 0;
+  padding: 4px 8px;
+  border-radius: 4px;
   color: black;
-  text-decoration: none;
   font-weight: 500;
-  text-transform: uppercase;
 
   :hover {
     color: orangered;

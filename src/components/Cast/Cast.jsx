@@ -15,6 +15,7 @@ const Cast = () => {
       if (!movieId) return;
       try {
         setIsLoading(true);
+        setError('');
         const { cast } = await fetchMovieCreditsById(movieId);
 
         setCast(cast);
@@ -36,16 +37,15 @@ const Cast = () => {
           {cast.map(el => (
             <Item key={el.id}>
               <ImageContainer>
-                {el.profile_path ? (
-                  <Image
-                    src={`https://image.tmdb.org/t/p/w500${el.profile_path}`}
-                    alt=""
-                  />
-                ) : (
-                  <Image src="https://via.placeholder.com/100x150" alt="" />
-                )}
+                <Image
+                  src={
+                    el.profile_path
+                      ? `https://image.tmdb.org/t/p/w500${el.profile_path}`
+                      : 'https://via.placeholder.com/100x150'
+                  }
+                  alt=""
+                />
               </ImageContainer>
-
               <Text>{el.name}</Text>
               <Text>Character: {el.character}</Text>
             </Item>
